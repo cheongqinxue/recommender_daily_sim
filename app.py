@@ -177,7 +177,7 @@ def main(args):
     sn = st.sidebar.text_input(label = 'Enter the serial numbers of news from the daily listing to simulate in-session reading activity', value='E.g. 1254,5561 (Note - no commas!)')
     
     sensitivity = st.sidebar.select_slider('Choose how sensitive the recommender will be to in-session reading activity (higher = more sensitive)', 
-                                      options=[0.0,1.0], value=0.47)
+                                            options=[i/100 for i in range(101)], value=0.47)
     
     c1 = st.container()
     c1.subheader('Recommended Articles')
