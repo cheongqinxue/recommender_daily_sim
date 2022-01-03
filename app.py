@@ -63,7 +63,7 @@ def load(path):
 
 def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, display_top_n=20, 
     search_n_per_signpost=5000, language='any', debug=False, favor='na', sensitivity=0.48):
-    favor = favor.split(',')
+    favor = [f.strip() for f in favor.split(',')]
     if all([sn.isnumeric() for sn in favor]):
         favor = [int(sn) for sn in favor]
         _, scores, indices = faiss_index.range_search(embeddings[favor,:], sensitivity)
@@ -175,7 +175,7 @@ def main(args):
     lang = st.sidebar.selectbox(label = 'Select your preferred language', options=languages)
 
     sn = st.sidebar.text_input(label = 'Enter the serial numbers of news from the daily listing to simulate in-session reading activity', 
-                               help = 'E.g. 1254,5561 (Note - no commas!)')
+                               help = 'To simulate reading of one or more news articles, enter the serial number of the article listed under the "Sn" column separated by a comma. E.g.225210,175694')
     
     sensitivity = st.sidebar.select_slider('Choose how sensitive the recommender will be to in-session reading activity (higher = more sensitive)', 
                                             options=[i/100 for i in range(101)], value=0.47)
