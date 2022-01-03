@@ -62,11 +62,11 @@ def load(path):
 
 
 def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, display_top_n=20, 
-    search_n_per_signpost=5000, language='any', debug=False, favor='na'):
+    search_n_per_signpost=5000, language='any', debug=False, favor='na', sensitivity=0.48):
     favor = favor.split(',')
     if all([sn.isnumeric() for sn in favor]):
         favor = [int(sn) for sn in favor]
-        _, scores, indices = faiss_index.range_search(embeddings[favor,:], 0.48)
+        _, scores, indices = faiss_index.range_search(embeddings[favor,:], sensitivity)
     else:
         scores, indices = faiss_index.search(torch.vstack(rep_vectors['rep_vectors'][domain]).numpy(), 
             search_n_per_signpost)
@@ -174,13 +174,17 @@ def main(args):
 
     lang = st.sidebar.selectbox(label = 'Select your preferred language', options=languages)
 
-    sn = st.sidebar.text_input(label = 'Enter the serial numbers of preferred news', value='E.g. 1254,5561')
+    sn = st.sidebar.text_input(label = 'Enter the serial numbers of news from the daily listing to simulate in-session reading activity', value='E.g. 1254,5561 (Note - no commas!)')
+    
+    sensitivity = st.sidebar.select_slider('Choose how sensitive the recommender will be to in-session reading activity (higher = more sensitive)', 
+                                      options=[0.0,1.0], value=0.47)
+    
     c1 = st.container()
     c1.subheader('Recommended Articles')
     c2 = st.container()
     c2.subheader('Daily Articles [As of 24 Nov 21]')
     render(container = c1, container2=c2, **{'domain':du, 'rep_vectors':rep_vectors, 'faiss_index':index, 'df':df, 
-        'head2ix':head2ix, 'embeddings':embeddings, 'model':model, 'language':lang, 'favor':sn})
+        'head2ix':head2ix, 'embeddings':embeddings, 'model':model, 'language':lang, 'favor':sn, 'sensitivity':sensitivity})
 
 
 if __name__ == '__main__':
