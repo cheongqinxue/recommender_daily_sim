@@ -174,7 +174,8 @@ def main(args):
 
     lang = st.sidebar.selectbox(label = 'Select your preferred language', options=languages)
 
-    sn = st.sidebar.text_input(label = 'Enter the serial numbers of news from the daily listing to simulate in-session reading activity', value='E.g. 1254,5561 (Note - no commas!)')
+    sn = st.sidebar.text_input(label = 'Enter the serial numbers of news from the daily listing to simulate in-session reading activity', 
+                               help = 'E.g. 1254,5561 (Note - no commas!)')
     
     sensitivity = st.sidebar.select_slider('Choose how sensitive the recommender will be to in-session reading activity (higher = more sensitive)', 
                                             options=[i/100 for i in range(101)], value=0.47)
