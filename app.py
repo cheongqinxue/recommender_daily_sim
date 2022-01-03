@@ -12,7 +12,7 @@ import plotly.graph_objects as go
 import s3fs
 
 class Args:
-    datapath = 's3://qx-poc-public/recommender'
+    datapath = 's3://qx-poc-public/recommender-daily'
     modelpath = 's3://qx-poc-public/recommender/transrBipartite-marginloss0_5-800epoch-5neg'
     
 FS = s3fs.S3FileSystem(anon=False)
