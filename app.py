@@ -51,7 +51,7 @@ def load(path):
         
     logger.info(f'Size of dataframe: {len(df)}')
     logger.info(f'Size of embeddings: {len(emb)}')
-    logger.info(f'Sample indices: {df.head().index.tolist()}')
+    logger.info(f'Sample indices: {df.tail().index.tolist()}')
     
     #34781
     logger.info(f'Random check: {df.loc[[26, 190, 206, 304, 320],:]}')
