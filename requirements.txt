@@ -1,0 +1,8 @@
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torch==1.10.1+cpu
+torchkge
+faiss-cpu
+pandas
+numpy
+s3fs
+joblib
