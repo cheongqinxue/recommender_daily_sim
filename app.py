@@ -51,6 +51,8 @@ def load(path):
         
     logger.info(f'Size of dataframe: {len(df)}')
     logger.info(f'Sample indices: {df.head().index.tolist()}')
+    #34781
+    logger.info(f'Random check: {df.loc[34781]}')
 
     return df, emb, index
 
