@@ -9,12 +9,13 @@ import torch
 from bipartite_models import TransRBipartiteModel
 import requests
 import plotly.graph_objects as go
-
-FS = None
+import s3fs
 
 class Args:
-    datapath = 'streamlit/sm'
-    modelpath = 'models/transrBipartite-marginloss0_5-800epoch-5neg'
+    datapath = 's3://qx-poc-public/recommender'
+    modelpath = 's3://qx-poc-public/recommender/transrBipartite-marginloss0_5-800epoch-5neg'
+    
+FS = s3fs.S3FileSystem(anon=False)
 
 def load(path):
     if 'df' in st.session_state and 'emb' in st.session_state and 'index' in st.session_state:
