@@ -28,9 +28,7 @@ def load(path):
     else: 
         if FS is None:
             df = joblib.load(path+'/df.joblib')
-            df = df.reset_index(drop=True).reset_index()
-            logger.info(f'Sample indices: {df.tail().index.tolist()}')
-            
+            df = df.reset_index(drop=True).reset_index()            
             df = df.sort_values(by='published_date', ascending=False)
             emb = np.load(path+'/embeds.npy')
         else:
@@ -38,6 +36,9 @@ def load(path):
                 df = joblib.load(f)
             with FS.open(path+'/embeds.npy') as f:
                 emb = np.load(f)
+            df = df.reset_index(drop=True).reset_index()
+            df = df.sort_values(by='published_date', ascending=False)
+            
         st.session_state['df'] = df
         st.session_state['emb'] = emb
 
