@@ -50,7 +50,9 @@ def load(path):
         st.session_state['index'] = index
         
     logger.info(f'Size of dataframe: {len(df)}')
+    logger.info(f'Size of embeddings: {len(emb)}')
     logger.info(f'Sample indices: {df.head().index.tolist()}')
+    
     #34781
     logger.info(f'Random check: {df.loc[34781]}')
 
@@ -81,7 +83,7 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
 
     indices_ = np.asarray(indices)[topn].tolist()
     scores_ = scores[topn].numpy().tolist()
-    resultdf = df.loc[indices_].drop(columns=['media_item_id','name'])
+    resultdf = df.loc[indices_,:].drop(columns=['media_item_id','name'])
     resultdf['score'] = scores_
     resultdf = resultdf.drop_duplicates(subset='title')
     if language != 'any':
