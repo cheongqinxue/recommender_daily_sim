@@ -94,7 +94,7 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
     try:
         resultdf = resultdf.head(display_top_n)
         resultdf['title'] = resultdf.title.apply(lambda x: x[:120])
-        resultdf['content'] = resultdf.content.apply(lambda x: x[:500]+'...')
+        resultdf['content'] = resultdf.content.apply(lambda x: x[:200]+'...')
         return resultdf
     except Exception as e:
         print('topn ', topn[:10])
