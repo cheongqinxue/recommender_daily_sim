@@ -50,6 +50,7 @@ def load(path):
         st.session_state['index'] = index
         
     logger.info(f'Size of dataframe: {len(df)}')
+    logger.info(f'Sample indices: {df.head().index.tolist()}')
 
     return df, emb, index
 
