@@ -49,7 +49,7 @@ def load(path):
         index.nprobe = 12
         st.session_state['index'] = index
         
-    logger.info(f'Size of dataframe: {len(df}')
+    logger.info(f'Size of dataframe: {len(df)}')
 
     return df, emb, index
 
