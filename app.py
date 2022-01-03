@@ -61,7 +61,7 @@ def load(path):
     return df, emb, index
 
 
-def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, display_top_n=5, 
+def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, display_top_n=20, 
     search_n_per_signpost=5000, language='any', debug=False, favor='na'):
     favor = favor.split(',')
     if all([sn.isnumeric() for sn in favor]):
