@@ -10,6 +10,9 @@ from bipartite_models import TransRBipartiteModel
 import requests
 import plotly.graph_objects as go
 import s3fs
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Args:
     datapath = 's3://qx-poc-public/recommender-daily'
@@ -45,6 +48,8 @@ def load(path):
         index.add(emb)
         index.nprobe = 12
         st.session_state['index'] = index
+        
+    logger.info(f'Size of dataframe: {len(df}')
 
     return df, emb, index
 
