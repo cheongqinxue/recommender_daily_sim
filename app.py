@@ -29,6 +29,8 @@ def load(path):
         if FS is None:
             df = joblib.load(path+'/df.joblib')
             df = df.reset_index(drop=True).reset_index()
+            logger.info(f'Sample indices: {df.tail().index.tolist()}')
+            
             df = df.sort_values(by='published_date', ascending=False)
             emb = np.load(path+'/embeds.npy')
         else:
@@ -51,7 +53,6 @@ def load(path):
         
     logger.info(f'Size of dataframe: {len(df)}')
     logger.info(f'Size of embeddings: {len(emb)}')
-    logger.info(f'Sample indices: {df.tail().index.tolist()}')
     
     #34781
     logger.info(f'Random check: {df.loc[[26, 190, 206, 304, 320],:]}')
