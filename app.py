@@ -178,7 +178,10 @@ def main(args):
                                help = 'To simulate reading of one or more news articles, enter the serial number of the article listed under the "Sn" column separated by a comma. E.g.225210,175694')
     
     sensitivity = st.sidebar.select_slider('Choose how sensitive the recommender will be to in-session reading activity (higher = more sensitive)', 
-                                            options=[i/100 for i in range(101)], value=0.6)
+                                            options=[i/20 for i in range(21)], value=0.5)
+    
+    explanation = ('#### In-session Recommendations Simulator<br> LALALA')
+    st.sidebar.markdown(explanation, unsafe_allow_html=True)
     
     c1 = st.container()
     c1.subheader('Recommended Articles')
