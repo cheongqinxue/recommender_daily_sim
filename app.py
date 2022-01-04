@@ -180,8 +180,14 @@ def main(args):
     sensitivity = st.sidebar.select_slider('Choose how sensitive the recommender will be to in-session reading activity (higher = more sensitive)', 
                                             options=[i/20 for i in range(21)], value=0.5)
     
-    explanation = ('#### In-session Recommendations Simulator<br> LALALA')
-    st.sidebar.markdown(explanation, unsafe_allow_html=True)
+    st.sidebar.markdown('#### In-session Recommendations Simulator')
+    explanation = ('The recomendations panel lists the top 15 recommended articles for the domain unit. To see how the recommendations '
+                   'change with a reading history, use the text-input above to enter serial numbers of the articles appearing in the daily '
+                   'articles panel. The recommender first searches the past 3 days\' archive for articles similar to the reading history. '
+                   'The sensitivity slider limits how many archived articles are extracted based on their similarity to the reading history. '
+                   'The extracted articles are then re-ranked using their recommendation scores and displayed in the recommendations panel.'
+                  )
+    st.sidebar.markdown(explanation)
     
     c1 = st.container()
     c1.subheader('Recommended Articles')
