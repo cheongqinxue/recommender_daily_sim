@@ -61,8 +61,8 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
         reps = torch.cat((reps, torch.tensor(embeddings[favor,:])), 0)
         conviction = torch.cosine_similarity(
             torch.tensor(embeddings[findices,:]).unsqueeze(1),
-            reps, dim=-1).mean(-1).numpy() * 0.2 + 0.8
-        fscores = tmp.fscores.values * conviction * sensitivity * 0.2 + 0.8
+            reps, dim=-1).mean(-1).numpy() * 0.3 + 0.7
+        fscores = tmp.fscores.values * conviction * sensitivity * 0.3 + 0.7
         del tmp
     else:
         fscores, findices = [], []
