@@ -181,11 +181,9 @@ def main(args):
                                             options=[i/20 for i in range(21)], value=0.5)
     
     st.sidebar.markdown('#### In-session Recommendations Simulator')
-    explanation = ('The recomendations panel lists the top 15 recommended articles for the domain unit. To see how the recommendations '
-                   'change with a reading history, use the text-input above to enter serial numbers of the articles appearing in the daily '
-                   'articles panel. The recommender first searches the past 3 days\' archive for articles similar to the reading history. '
-                   'The sensitivity slider limits how many archived articles are extracted based on their similarity to the reading history. '
-                   'The extracted articles are then re-ranked using their recommendation scores and displayed in the recommendations panel.'
+    explanation = ('Use the text-inputs above to simulate your own recent reading history. Enter the serial numbers of articles from the daily panel '
+                   'to find other articles like them. For instance, enter "2835" to find more platinium-mining related news. \n A longer reading history list will prompt the recommender to give more weight to the recent '
+                   'reading history when searching for articles. All articles come from a 3-day (22 Nov to 24 Nov) window.'
                   )
     st.sidebar.markdown(explanation)
     
