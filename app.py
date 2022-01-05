@@ -46,12 +46,27 @@ def load(path):
 
 def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, display_top_n=20, 
     search_n_per_signpost=5000, language='any', debug=False, favor='na', sensitivity=0.48):
+
+    reps = torch.vstack(rep_vectors['rep_vectors'][domain])
+    scores, indices = faiss_index.search(reps.numpy(), 
+        search_n_per_signpost)
+
     if len(favor) > 0:
         favor = [int(sn) for sn in favor]
-        _, scores, indices = faiss_index.range_search(embeddings[favor,:], sensitivity)
+        fscores, findices = faiss_index.search(embeddings[favor,:], 100)
+        fscores = fscores.reshape(-1)
+        findices = findices.reshape(-1)
+        tmp = pd.DataFrame({'fscores':fscores, 'findices':findices}).drop_duplicates(subset='findices')
+        findices = tmp.findices.tolist()
+        reps = torch.cat((reps, torch.tensor(embeddings[favor,:])), 0)
+        conviction = torch.cosine_similarity(
+            torch.tensor(embeddings[findices,:]).unsqueeze(1),
+            reps, dim=-1).mean(-1).numpy() * 0.2 + 0.8
+        fscores = tmp.fscores.values * conviction * sensitivity * 0.2 + 0.8
+        del tmp
     else:
-        scores, indices = faiss_index.search(torch.vstack(rep_vectors['rep_vectors'][domain]).numpy(), 
-            search_n_per_signpost)
+        fscores, findices = [], []
+
     indices = list(set(indices.reshape(-1).tolist()))
 
     with torch.no_grad():
@@ -62,8 +77,11 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
                 r_idx=torch.tensor([0], device = 'cpu'),
                 t_idx=None,
                 new_tails=te)
-        scores = torch.tanh(scores+2.5)
+        scores = torch.cat((torch.tanh(scores+2.5), torch.tensor(fscores)), -1)
         topn = torch.argsort(scores, descending=True)[:max(300, int(search_n_per_signpost/4))].tolist()
+
+    indices += findices
+
 
     indices_ = np.asarray(indices)[topn].tolist()
     scores_ = scores[topn].numpy().tolist()
