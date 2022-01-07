@@ -65,7 +65,7 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
                 r_idx=torch.tensor([0], device = 'cpu'),
                 t_idx=None,
                 new_tails=te)
-        scores = torch.cat((torch.tanh(scores+2.5), torch.tensor(fscores)), -1)
+        scores = torch.tanh(scores+2.5)
         topn = torch.argsort(scores, descending=True)[:max(300, int(search_n_per_signpost/4))].tolist()
 
     indices_ = np.asarray(indices)[topn].tolist()
