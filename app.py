@@ -45,7 +45,7 @@ def load(path):
 
 
 def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, display_top_n=20, 
-    search_n_per_signpost=5000, language='any', debug=False, favor='na', sensitivity=0.48):
+    search_n_per_signpost=5000, language='any', debug=False, favor='na', sensitivity=0):
 
     reps = torch.vstack(rep_vectors['rep_vectors'][domain])
 
@@ -184,7 +184,7 @@ def main(args):
         sn = []
     
     render(container = c1, container2=c2, domain_media_df=domain_media_df, **{'domain':du, 'rep_vectors':rep_vectors, 'faiss_index':index, 'df':df, 
-        'head2ix':head2ix, 'embeddings':embeddings, 'model':model, 'language':lang, 'favor':sn, 'sensitivity':sensitivity})
+        'head2ix':head2ix, 'embeddings':embeddings, 'model':model, 'language':lang, 'favor':sn})
 
 
 if __name__ == '__main__':
