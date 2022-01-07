@@ -53,10 +53,10 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
         favor = [int(sn) for sn in favor]
         scores, indices = faiss_index.search(embeddings[favor,:], display_top_n+10)
         indices = [ix for ix, s in zip(indices.reshape(-1), scores.reshape(-1)) if s > sensitivity]
+        indices = list(set(indices))
     else:
-        _, indices = faiss_index.search(reps.numpy(), search_n_per_signpost)
-    
-    indices = list(set(indices.reshape(-1).tolist()))
+        _, indices = faiss_index.search(reps.numpy(), search_n_per_signpost)  
+        indices = list(set(indices.reshape(-1).tolist()))
 
     with torch.no_grad():
         h = head2ix[domain]
