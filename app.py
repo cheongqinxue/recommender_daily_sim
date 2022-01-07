@@ -51,12 +51,18 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
 
     if len(favor) > 0:
         favor = [int(sn) for sn in favor]
-        scores, indices = faiss_index.search(embeddings[favor,:], display_top_n)
+        scores, indices = faiss_index.search(embeddings[favor,:], display_top_n*20)
         indices = [ix for ix, s in zip(indices.reshape(-1), scores.reshape(-1)) if s > sensitivity]
+        if language != 'any':
+            languages = df.iloc[indices,:]['language'].tolist()
+            indices = [ix for ix, l in zip(indices, languages) if l in language][display_top_n]
         indices = list(set(indices))
     else:
         _, indices = faiss_index.search(reps.numpy(), search_n_per_signpost)  
         indices = list(set(indices.reshape(-1).tolist()))
+        if language != 'any':
+            languages = df.iloc[indices,:]['language'].tolist()
+            indices = [ix for ix, l in zip(indices, languages) if l in language]
 
     with torch.no_grad():
         h = head2ix[domain]
@@ -74,8 +80,6 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
     resultdf = df.iloc[indices_,:].drop(columns=['media_item_id'])
     resultdf['score'] = scores_
     resultdf = resultdf.drop_duplicates(subset='title')
-    if language != 'any':
-        resultdf = resultdf[resultdf.language==language]
     resultdf = resultdf.drop(columns=['language'])
     try:
         resultdf = resultdf.head(display_top_n)
