@@ -52,7 +52,7 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
     if len(favor) > 0:
         favor = [int(sn) for sn in favor]
         scores, indices = faiss_index.search(embeddings[favor,:], display_top_n*20)
-        indices = [ix for ix, s in zip(indices.reshape(-1), scores.reshape(-1)) if s > sensitivity]
+        # indices = [ix for ix, s in zip(indices.reshape(-1), scores.reshape(-1)) if s > sensitivity]
         if language != 'any':
             languages = df.iloc[indices,:]['language'].tolist()
             indices = [ix for ix, l in zip(indices, languages) if l in language]
