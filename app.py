@@ -162,8 +162,8 @@ def main(args):
     sn = st.sidebar.text_input(label = 'Enter the serial numbers of news from the daily listing to simulate in-session reading activity', 
                                help = 'To simulate reading of one or more news articles, enter the serial number of the article listed under the "Sn" column separated by a comma. E.g.225210,175694')
     
-    sensitivity = st.sidebar.select_slider('Choose how sensitive the recommender will be to in-session reading activity (higher = more sensitive)', 
-                                            options=[i/20 for i in range(21)], value=0.5)
+    # sensitivity = st.sidebar.select_slider('Choose how sensitive the recommender will be to in-session reading activity (higher = more sensitive)', 
+    #                                         options=[i/20 for i in range(21)], value=0.5)
     
     st.sidebar.markdown('#### In-session Recommendations Simulator')
     explanation = ('Use the text-inputs above to simulate your own recent reading history. Enter the serial numbers of articles from the daily panel '
