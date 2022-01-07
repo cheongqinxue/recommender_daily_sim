@@ -44,14 +44,14 @@ def load(path):
     return df, domain_media, emb, index
 
 
-def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, display_top_n=20, 
-    search_n_per_signpost=5000, language='any', debug=False, favor='na', sensitivity=0.6):
+def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, display_top_n=10, 
+    search_n_per_signpost=5000, language='any', debug=False, favor='na', sensitivity=0.5):
 
     reps = torch.vstack(rep_vectors['rep_vectors'][domain])
 
     if len(favor) > 0:
         favor = [int(sn) for sn in favor]
-        scores, indices = faiss_index.search(embeddings[favor,:], display_top_n+10)
+        scores, indices = faiss_index.search(embeddings[favor,:], display_top_n)
         indices = [ix for ix, s in zip(indices.reshape(-1), scores.reshape(-1)) if s > sensitivity]
         indices = list(set(indices))
     else:
