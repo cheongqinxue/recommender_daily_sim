@@ -45,13 +45,14 @@ def load(path):
 
 
 def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, display_top_n=20, 
-    search_n_per_signpost=5000, language='any', debug=False, favor='na', sensitivity=0):
+    search_n_per_signpost=5000, language='any', debug=False, favor='na', sensitivity=0.7):
 
     reps = torch.vstack(rep_vectors['rep_vectors'][domain])
 
     if len(favor) > 0:
         favor = [int(sn) for sn in favor]
-        _, indices = faiss_index.search(embeddings[favor,:], display_top_n+10)
+        scores, indices = faiss_index.search(embeddings[favor,:], display_top_n+10)
+        indices = [ix for ix, s in zip(indices.reshape(-1), scores.reshape(-1)) if s > sensitivity]
     else:
         _, indices = faiss_index.search(reps.numpy(), search_n_per_signpost)
     
