@@ -55,7 +55,7 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
         indices = [ix for ix, s in zip(indices.reshape(-1), scores.reshape(-1))] # if s > sensitivity]
         if language != 'any':
             languages = df.iloc[indices,:]['language'].tolist()
-            indices = [ix for ix, l in zip(indices, languages) if l in language]
+            indices = [ix for ix, l in zip(indices, languages) if str(l) in language]
         indices = list(set(indices))[:display_top_n]
     else:
         _, indices = faiss_index.search(reps.numpy(), search_n_per_signpost)  
