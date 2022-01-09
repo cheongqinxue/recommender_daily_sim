@@ -80,7 +80,7 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
         indices = list(set(indices.reshape(-1).tolist()))
         if language != 'any':
             languages = df.iloc[indices,:]['language'].tolist()
-            indices = [ix for ix, l in zip(indices, languages) if l in language]
+            indices = [ix for ix, l in zip(indices, languages) if str(l) in language]
 
     with torch.no_grad():
         h = head2ix[domain]
