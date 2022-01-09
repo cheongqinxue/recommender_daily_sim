@@ -51,18 +51,35 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
 
     if len(favor) > 0:
         favor = [int(sn) for sn in favor]
+
+        k = display_top_n*30 if language != 'any' else math.ceil(display_top_n/len(favor))
+
         scores, indices = faiss_index.search(embeddings[favor,:], display_top_n*20)
-        indices = [ix for ix, s in zip(indices.reshape(-1), scores.reshape(-1))] # if s > sensitivity]
+
         if language != 'any':
-            languages = df.iloc[indices,:]['language'].tolist()
-            indices = [ix for ix, l in zip(indices, languages) if str(l) in language]
-        indices = list(set(indices))[:display_top_n]
+            tmp = []
+            for indices_ in indices:
+                indices_ = indices_.tolist()
+                languages = df.loc[indices_,:]['language'].tolist()
+                indices_ = [ix for ix, l in zip(indices_, languages) if str(l) in language]
+                indices_ = indices_[:math.ceil(display_top_n/len(favor))]
+                tmp.append(indices_)
+            indices = np.asarray(tmp)
+
+        indices = [ix for ix in indices.reshape(-1).tolist() if ix not in favor]
+        
+
+        # index_set = []
+        # for ix in indices:
+        #     if ix not in index_set:
+        #         index_set.append(ix)
+        # indices = index_set[:display_top_n]
     else:
         _, indices = faiss_index.search(reps.numpy(), search_n_per_signpost)  
         indices = list(set(indices.reshape(-1).tolist()))
         if language != 'any':
             languages = df.iloc[indices,:]['language'].tolist()
-            indices = [ix for ix, l in zip(indices, languages) if str(l) in language]
+            indices = [ix for ix, l in zip(indices, languages) if l in language]
 
     with torch.no_grad():
         h = head2ix[domain]
@@ -80,6 +97,8 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
     resultdf = df.iloc[indices_,:].drop(columns=['media_item_id'])
     resultdf['score'] = scores_
     resultdf = resultdf.drop_duplicates(subset='title')
+    if language != 'any':
+        resultdf = resultdf[resultdf.language==language]
     resultdf = resultdf.drop(columns=['language'])
     try:
         resultdf = resultdf.head(display_top_n)
