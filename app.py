@@ -66,6 +66,15 @@ def search(domain, rep_vectors, faiss_index, df, head2ix, embeddings, model, dis
                 indices_ = indices_[:math.ceil(display_top_n/len(favor))]
                 tmp.append(indices_)
             indices = np.asarray(tmp)
+        else:
+            tmp = []
+            for indices_ in indices:
+                indices_ = indices_.tolist()
+                languages = df.loc[indices_,:]['language'].tolist()
+                indices_ = [ix for ix, l in zip(indices_, languages)]
+                indices_ = indices_[:math.ceil(display_top_n/len(favor))]
+                tmp.append(indices_)
+            indices = np.asarray(tmp)
 
         indices = [ix for ix in indices.reshape(-1).tolist() if ix not in favor]
         
