@@ -224,7 +224,7 @@ def main(args):
 if __name__ == '__main__':
     args = Args()
     
-    with st.form("password", clear_on_submit=True):
+    with st.sidebar.form("password", clear_on_submit=True):
         
         pwd_ = st.text_input(label='Enter Password')
 
