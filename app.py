@@ -225,16 +225,17 @@ if __name__ == '__main__':
     args = Args()
     
     with st.form("password", clear_on_submit=True):
-        st.caption("Enter Password")
+        
         pwd_ = st.text_input(label='Enter Password')
 
         # Every form must have a submit button.
         submitted = st.form_submit_button("Submit")
-        if submitted:
-            if pwd_ == st.secrets['PASSWORD']:
-                st.balloons()
-                main(args)
-            else:
-                st.error('Wrong password')
-                st.stop()
+    
+    if submitted:
+        if pwd_ == st.secrets['PASSWORD']:
+            st.balloons()
+            main(args)
+        else:
+            st.error('Wrong password')
+            st.stop()
 
