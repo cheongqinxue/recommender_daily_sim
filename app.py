@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 class Args:
     datapath = 's3://qx-poc-public/recommender-daily'
-    modelpath = 's3://qx-poc-public/recommender/transrBipartite-marginloss0_5-800epoch-5neg'
+    modelpath = 's3://qx-poc-public/recommender-daily/transrBipartite-marginloss0_5-800epoch-5neg'
     
 FS = s3fs.S3FileSystem(anon=False)
 
