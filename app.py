@@ -227,7 +227,6 @@ if __name__ == '__main__':
     pwd_ = st.sidebar.text_input(label='Enter Password')
 
     if pwd_ == st.secrets['PASSWORD']:
-        st.balloons()
         main(args)
     else:
         st.error('Wrong password')
